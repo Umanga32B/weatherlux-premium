@@ -240,10 +240,36 @@ document.addEventListener('DOMContentLoaded', () => {
             showError('Geolocation is not supported by your browser.');
             return;
         }
+        
+        showLoading();
         navigator.geolocation.getCurrentPosition(
-            (position) => {
+            async (position) => {
                 const { latitude, longitude } = position.coords;
-                fetchAllWeatherData(latitude, longitude, "Current Location");
+                
+                try {
+                    // Use reverse geocoding to get city name
+                    const reverseGeoUrl = `https://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=1&appid=${apiKey}`;
+                    const geoResponse = await fetch(reverseGeoUrl);
+                    
+                    let cityName = "Current Location";
+                    if (geoResponse.ok) {
+                        const geoData = await geoResponse.json();
+                        if (geoData.length > 0) {
+                            cityName = geoData[0].name;
+                            // Add state/country if available for better context
+                            if (geoData[0].state) {
+                                cityName += `, ${geoData[0].state}`;
+                            } else if (geoData[0].country) {
+                                cityName += `, ${geoData[0].country}`;
+                            }
+                        }
+                    }
+                    
+                    fetchAllWeatherData(latitude, longitude, cityName);
+                } catch (error) {
+                    // If reverse geocoding fails, still show weather with generic name
+                    fetchAllWeatherData(latitude, longitude, "Current Location");
+                }
             },
             (error) => showError(`Unable to retrieve location: ${error.message}`)
         );
