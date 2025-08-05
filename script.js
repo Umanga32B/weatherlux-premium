@@ -295,7 +295,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (currentWeatherData) {
             const tempUnit = currentUnit === 'metric' ? 'C' : 'F';
             const shareData = {
-                title: 'WeatherLux',
+                title: 'MyWeather Pro',
                 text: `Current weather in ${document.getElementById('cityName').textContent}: ${Math.round(currentWeatherData.current.main.temp)}°${tempUnit}, ${currentWeatherData.current.weather[0].description}.`,
                 url: window.location.href
             };
