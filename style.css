@@ -839,11 +839,178 @@ body.dark-theme .theme-toggle-btn .fa-moon {
     margin: 5px auto;
 }
 
-.hourly-temp {
-    font-weight: 600;
+/* Pro-Level Feature Cards */
+.air-quality-card, .alerts-card, .astronomy-card {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    padding: 25px;
+    margin-bottom: 25px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    animation: slideUp 0.6s ease-out;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.air-quality-card h3, .alerts-card h3, .astronomy-card h3 {
     color: #2d3436;
+    margin-bottom: 20px;
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.air-quality-card h3 i, .alerts-card h3 i, .astronomy-card h3 i {
+    color: #74b9ff;
+}
+
+/* Air Quality Index */
+.air-quality-content {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.aqi-main {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+}
+
+.aqi-value {
+    font-size: 3rem;
+    font-weight: 600;
+    color: #27ae60;
+    padding: 10px 20px;
+    border-radius: 15px;
+    background: rgba(39, 174, 96, 0.1);
+}
+
+.aqi-label span {
+    display: block;
+}
+
+#aqiCategory {
+    font-weight: 600;
+    font-size: 1.2rem;
+}
+
+#aqiDescription {
+    color: #636e72;
     font-size: 0.9rem;
-    margin-top: 8px;
+}
+
+.aqi-components {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+}
+
+.aqi-component {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+}
+
+.aqi-name {
+    color: #636e72;
+}
+
+.aqi-comp-value {
+    font-weight: 500;
+}
+
+/* Weather Alerts */
+.alert-item {
+    background: rgba(224, 82, 99, 0.1);
+    border-left: 5px solid #e05263;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.alert-title {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #e05263;
+}
+
+.alert-source {
+    font-size: 0.8rem;
+    color: #636e72;
+    margin-bottom: 10px;
+}
+
+.alert-description {
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* Astronomy Card - Sun & Moon */
+.sun-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.sun-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.sun-item i {
+    font-size: 1.5rem;
+    color: #f39c12;
+}
+
+.sun-item:last-child i {
+    color: #74b9ff;
+}
+
+.sun-label {
+    font-size: 0.9rem;
+    color: #636e72;
+    display: block;
+}
+
+.sun-time {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.sun-progress {
+    flex: 1;
+}
+
+.sun-track {
+    width: 100%;
+    height: 10px;
+    background: rgba(116, 185, 255, 0.2);
+    border-radius: 5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.sun-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #f39c12, #f1c40f);
+    transition: width 1s ease-out;
+}
+
+.sun-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #636e72;
+    margin-top: 5px;
 }
 
 /* Responsive Design for New Features */
@@ -925,6 +1092,157 @@ body.dark-theme .forecast-high {
 body.dark-theme .hourly-item {
     background: rgba(52, 73, 94, 0.5);
     border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Dark Theme - Pro Features */
+body.dark-theme .air-quality-card,
+body.dark-theme .alerts-card,
+body.dark-theme .astronomy-card {
+    background: rgba(44, 62, 80, 0.7);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ecf0f1;
+}
+
+body.dark-theme .air-quality-card h3,
+body.dark-theme .alerts-card h3,
+body.dark-theme .astronomy-card h3 {
+    color: white;
+}
+
+body.dark-theme .aqi-value {
+    background: rgba(39, 174, 96, 0.2);
+    color: #2ecc71;
+}
+
+body.dark-theme #aqiCategory {
+    color: white;
+}
+
+body.dark-theme #aqiDescription,
+body.dark-theme .aqi-name,
+body.dark-theme .sun-label,
+body.dark-theme .sun-labels {
+    color: #bdc3c7;
+}
+
+body.dark-theme .aqi-comp-value,
+body.dark-theme .sun-time {
+    color: #ecf0f1;
+}
+
+body.dark-theme .alert-item {
+    background: rgba(224, 82, 99, 0.2);
+    border-left-color: #e74c3c;
+}
+
+body.dark-theme .alert-title {
+    color: #e74c3c;
+}
+
+body.dark-theme .alert-source,
+body.dark-theme .alert-description {
+    color: #bdc3c7;
+}
+
+body.dark-theme .sun-track {
+    background: rgba(116, 185, 255, 0.1);
+}
+
+/* Enhanced Hourly Forecast */
+.hourly-temp {
+    font-weight: 600;
+    color: #2d3436;
+    font-size: 0.9rem;
+    margin-top: 8px;
+}
+
+.hourly-desc {
+    font-size: 0.75rem;
+    color: #636e72;
+    margin-top: 5px;
+    text-align: center;
+    text-transform: capitalize;
+}
+
+.hourly-wind {
+    font-size: 0.7rem;
+    color: #74b9ff;
+    margin-top: 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+}
+
+body.dark-theme .hourly-temp {
+    color: white;
+}
+
+body.dark-theme .hourly-desc,
+body.dark-theme .hourly-wind {
+    color: #bdc3c7;
+}
+
+/* Responsive for Pro Features */
+@media (max-width: 768px) {
+    .air-quality-content {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .aqi-main {
+        justify-content: center;
+        text-align: center;
+    }
+    
+    .sun-info {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .sun-progress {
+        width: 100%;
+        order: 3;
+    }
+    
+    .sun-item {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 600px) {
+    .theme-toggle-container {
+        top: 15px;
+        left: 15px;
+    }
+    
+    .theme-toggle-btn {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .unit-toggle {
+        top: 15px;
+        right: 15px;
+        padding: 3px;
+    }
+    
+    .unit-btn {
+        padding: 6px 12px;
+        font-size: 0.9rem;
+    }
+    
+    .air-quality-card,
+    .alerts-card,
+    .astronomy-card {
+        padding: 20px;
+    }
+    
+    .aqi-value {
+        font-size: 2.5rem;
+        padding: 8px 16px;
+    }
 }
 
 @media (max-width: 768px) {

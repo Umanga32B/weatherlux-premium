@@ -77,9 +77,63 @@
             <div class="forecast-grid" id="forecastGrid"></div>
         </div>
 
-        <!-- Hourly Forecast -->
+        <!-- Air Quality Index -->
+        <div id="airQualityCard" class="air-quality-card hidden">
+            <h3><i class="fas fa-lungs"></i> Air Quality</h3>
+            <div class="air-quality-content">
+                <div class="aqi-main">
+                    <div class="aqi-value" id="aqiValue">--</div>
+                    <div class="aqi-label">
+                        <span id="aqiCategory">Loading...</span>
+                        <span id="aqiDescription"></span>
+                    </div>
+                </div>
+                <div class="aqi-components" id="aqiComponents"></div>
+            </div>
+        </div>
+
+        <!-- Weather Alerts -->
+        <div id="alertsCard" class="alerts-card hidden">
+            <h3><i class="fas fa-exclamation-triangle"></i> Weather Alerts</h3>
+            <div id="alertsContent"></div>
+        </div>
+
+        <!-- Sunrise/Sunset & Astronomy -->
+        <div id="astronomyCard" class="astronomy-card hidden">
+            <h3><i class="fas fa-sun"></i> Sun & Moon</h3>
+            <div class="astronomy-content">
+                <div class="sun-info">
+                    <div class="sun-item">
+                        <i class="fas fa-sun"></i>
+                        <div>
+                            <span class="sun-label">Sunrise</span>
+                            <span class="sun-time" id="sunriseTime">--:--</span>
+                        </div>
+                    </div>
+                    <div class="sun-progress">
+                        <div class="sun-track">
+                            <div class="sun-indicator" id="sunIndicator"></div>
+                        </div>
+                        <div class="sun-labels">
+                            <span>6 AM</span>
+                            <span>12 PM</span>
+                            <span>6 PM</span>
+                        </div>
+                    </div>
+                    <div class="sun-item">
+                        <i class="fas fa-moon"></i>
+                        <div>
+                            <span class="sun-label">Sunset</span>
+                            <span class="sun-time" id="sunsetTime">--:--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hourly Forecast - Enhanced -->
         <div id="hourlyCard" class="hourly-card hidden">
-            <h3><i class="fas fa-clock"></i> Hourly Forecast</h3>
+            <h3><i class="fas fa-clock"></i> 24-Hour Forecast</h3>
             <div class="hourly-scroll" id="hourlyScroll"></div>
         </div>
 

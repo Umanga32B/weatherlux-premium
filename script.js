@@ -20,6 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const weatherCard = document.getElementById('weatherCard');
     const forecastCard = document.getElementById('forecastCard');
     const hourlyCard = document.getElementById('hourlyCard');
+    const airQualityCard = document.getElementById('airQualityCard');
+    const alertsCard = document.getElementById('alertsCard');
+    const astronomyCard = document.getElementById('astronomyCard');
     
     const refreshBtn = document.getElementById('refreshBtn');
     const favoriteBtn = document.getElementById('favoriteBtn');
@@ -48,15 +51,26 @@ document.addEventListener('DOMContentLoaded', () => {
         weatherCard.classList.remove('hidden');
         forecastCard.classList.remove('hidden');
         hourlyCard.classList.remove('hidden');
+        airQualityCard.classList.remove('hidden');
+        alertsCard.classList.remove('hidden');
+        astronomyCard.classList.remove('hidden');
         unitToggle.classList.remove('hidden');
     };
 
     // --- UI UPDATE FUNCTIONS ---
-    const updateUI = (data, cityName) => {
+    const updateUI = async (data, cityName) => {
         currentWeatherData = data;
         updateCurrentWeatherUI(data.current, data.timezone_offset, cityName);
         updateHourlyUI(data.forecast.list, data.timezone_offset);
         updateForecastUI(data.forecast.list, data.timezone_offset);
+        
+        // Fetch and update pro features
+        const lat = data.current.coord.lat;
+        const lon = data.current.coord.lon;
+        await updateAirQualityUI(lat, lon);
+        updateAlertsUI([]); // OpenWeatherMap free API doesn't include alerts
+        updateAstronomyUI(data.current);
+        
         showAllCards();
     };
 
@@ -120,6 +134,78 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
+    const updateAstronomyUI = (current) => {
+        const { sunrise, sunset } = current.sys;
+        const sunriseTime = new Date(sunrise * 1000);
+        const sunsetTime = new Date(sunset * 1000);
+        const now = new Date();
+
+        document.getElementById('sunriseTime').textContent = sunriseTime.toLocaleTimeString('en-US', { hour: '2-digit', minute:'2-digit' });
+        document.getElementById('sunsetTime').textContent = sunsetTime.toLocaleTimeString('en-US', { hour: '2-digit', minute:'2-digit' });
+
+        // Update sun progress bar
+        const totalDaylight = (sunset - sunrise) / 60; // in minutes
+        const minutesSinceSunrise = (now - sunriseTime) / (1000 * 60);
+        const progress = Math.max(0, Math.min(100, (minutesSinceSunrise / totalDaylight) * 100));
+        document.getElementById('sunIndicator').style.width = `${progress}%`;
+    };
+    
+    const updateAirQualityUI = async (lat, lon) => {
+        const url = `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`;
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error('Could not fetch Air Quality Index');
+            const data = await response.json();
+            const aqi = data.list[0].main.aqi;
+
+            const aqiValueEl = document.getElementById('aqiValue');
+            aqiValueEl.textContent = aqi;
+
+            const [category, description, color] = getAqiCategory(aqi);
+            document.getElementById('aqiCategory').textContent = category;
+            document.getElementById('aqiDescription').textContent = description;
+            aqiValueEl.style.color = color;
+            aqiValueEl.style.background = `${color}20`; // 20% opacity
+            
+            const componentsEl = document.getElementById('aqiComponents');
+            componentsEl.innerHTML = '';
+            for (const [key, value] of Object.entries(data.list[0].components)) {
+                componentsEl.innerHTML += `<div class="aqi-component"><span class="aqi-name">${key.toUpperCase()}:</span> <span class="aqi-comp-value">${value.toFixed(2)} μg/m³</span></div>`;
+            }
+        } catch (error) {
+            console.error("AQI Error:", error);
+            airQualityCard.classList.add('hidden');
+        }
+    };
+    
+    const getAqiCategory = (aqi) => {
+        if (aqi === 1) return ['Good', 'Air quality is excellent', '#27ae60'];
+        if (aqi === 2) return ['Fair', 'Air quality is acceptable', '#f1c40f'];
+        if (aqi === 3) return ['Moderate', 'Some may experience irritation', '#e67e22'];
+        if (aqi === 4) return ['Poor', 'Health effects can be felt', '#c0392b'];
+        if (aqi === 5) return ['Very Poor', 'Health alert: serious effects', '#8e44ad'];
+        return ['Unknown', '', '#7f8c8d'];
+    };
+    
+    const updateAlertsUI = (alerts) => {
+        const alertsContent = document.getElementById('alertsContent');
+        if (alerts.length === 0) {
+            alertsCard.classList.add('hidden');
+            return;
+        }
+        alertsCard.classList.remove('hidden');
+        alertsContent.innerHTML = '';
+        alerts.forEach(alert => {
+            alertsContent.innerHTML += `
+                <div class="alert-item">
+                    <h4 class="alert-title">${alert.event}</h4>
+                    <p class="alert-source">Source: ${alert.sender_name}</p>
+                    <p class="alert-description">${alert.description}</p>
+                </div>
+            `;
+        });
+    };
+    
     const updateForecastUI = (forecastList) => {
         const forecastGrid = document.getElementById('forecastGrid');
         forecastGrid.innerHTML = '';
