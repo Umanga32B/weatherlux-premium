@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const refreshBtn = document.getElementById('refreshBtn');
     const favoriteBtn = document.getElementById('favoriteBtn');
     const shareBtn = document.getElementById('shareBtn');
+    const themeToggle = document.getElementById('themeToggle');
 
     // --- UI HELPER FUNCTIONS ---
     const showLoading = () => {
@@ -312,5 +313,54 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     });
+
+    // --- DARK MODE TOGGLE ---
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = document.body.classList.contains('dark-theme');
+        
+        if (currentTheme) {
+            // Switch to light theme
+            document.body.classList.remove('dark-theme');
+            document.body.classList.add('light-theme');
+            localStorage.setItem('theme', 'light');
+        } else {
+            // Switch to dark theme with animation
+            // Create overlay element
+            const overlay = document.createElement('div');
+            overlay.className = 'dark-overlay';
+            document.body.appendChild(overlay);
+            
+            // Position overlay at button location
+            const rect = themeToggle.getBoundingClientRect();
+            overlay.style.transformOrigin = `${rect.left + rect.width/2}px ${rect.top + rect.height/2}px`;
+            
+            // Trigger animation
+            setTimeout(() => {
+                overlay.classList.add('active');
+            }, 10);
+            
+            // Apply dark theme after animation starts
+            setTimeout(() => {
+                document.body.classList.add('dark-theme');
+                document.body.classList.remove('light-theme');
+                localStorage.setItem('theme', 'dark');
+                
+                // Remove overlay after animation completes
+                setTimeout(() => {
+                    document.body.removeChild(overlay);
+                }, 300);
+            }, 400);
+        }
+    });
+
+    // --- INITIALIZE THEME FROM LOCALSTORAGE ---
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-theme');
+        document.body.classList.remove('light-theme');
+    } else {
+        document.body.classList.add('light-theme');
+        document.body.classList.remove('dark-theme');
+    }
 });
 
